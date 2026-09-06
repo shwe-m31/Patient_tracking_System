@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    font-family: 'Times New Roman', Times, serif !important;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 35%, #e0e7ff 70%, #f1f5f9 100%);
+    min-height: 100vh;
+    color: #1e293b;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+}
+
+/* Glassmorphism Styling */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.08);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.88);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.15);
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+.glass-card-subtle {
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.glass-header {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.glass-modal {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* High Contrast Mode Override */
+body.high-contrast {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast .glass-card,
+body.high-contrast .glass-card-subtle,
+body.high-contrast .glass-header,
+body.high-contrast .glass-modal {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffff00 !important;
+}
+
+body.high-contrast button {
+  border: 2px solid #ffffff !important;
+}
+
+/* Font Size Scaling */
+body.text-large {
+  font-size: 115%;
+}
+
+body.text-xlarge {
+  font-size: 130%;
+}
+
+/* Pulse animation for voice recording */
+@keyframes micPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.animate-mic-pulse {
+  animation: micPulse 1.5s infinite;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(241, 245, 249, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.5);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
+}
+
+/* Print Stylesheet */
+@media print {
+  header, nav, button, .glass-header, .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  .glass-card, .glass-card-subtle {
+    background: #ffffff !important;
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+}
