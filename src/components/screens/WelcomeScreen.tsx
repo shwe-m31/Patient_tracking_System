@@ -1,10 +1,9 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { Play, HelpCircle, Eye, ShieldCheck, Stethoscope, ArrowRight, Activity, Sparkles, AlertCircle } from 'lucide-react';
-import { DEMO_CASES } from '../../mock/mockData';
+import { Play, HelpCircle, Eye, ShieldCheck, Stethoscope, ArrowRight, Activity } from 'lucide-react';
 
 export const WelcomeScreen: React.FC = () => {
-  const { setStep, setIsHelpOpen, setIsAccessibilityOpen, loadDemoCase } = useApp();
+  const { setStep, setIsHelpOpen, setIsAccessibilityOpen } = useApp();
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-8 animate-fadeIn">
@@ -95,53 +94,7 @@ export const WelcomeScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* SIH Quick Demo Mode Box */}
-      <div className="glass-card rounded-3xl p-6 md:p-8 border border-sky-300/80 shadow-lg bg-gradient-to-br from-sky-50/90 to-indigo-50/90">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <h2 className="text-xl md:text-2xl font-bold text-slate-900 m-0">
-              SIH Presentation — Quick Demo Mode
-            </h2>
-            <p className="text-xs md:text-sm text-slate-600">
-              Select a pre-loaded clinical persona to quickly experience the complete end-to-end workflow:
-            </p>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-          {DEMO_CASES.map((demo) => (
-            <button
-              key={demo.id}
-              onClick={() => loadDemoCase(demo.id)}
-              className="p-4 rounded-2xl bg-white/90 hover:bg-white border border-slate-200 text-left transition-all hover:shadow-md hover:border-blue-400 group flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-1 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded">
-                    {demo.complaint}
-                  </span>
-                  {demo.hasRedFlag && (
-                    <span className="text-xs font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded flex items-center gap-1">
-                      <AlertCircle className="w-3 h-3" /> Priority
-                    </span>
-                  )}
-                </div>
-                <div className="font-bold text-slate-900 text-sm group-hover:text-blue-700 transition">
-                  {demo.title}
-                </div>
-                <div className="text-xs text-slate-600 mt-1">{demo.subtitle}</div>
-              </div>
-              <div className="mt-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
-                <span>Load Sample Case</span>
-                <ArrowRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition" />
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Trust & Clinical Safety Footer Notice */}
       <div className="glass-card-subtle rounded-2xl p-4 text-center text-xs text-slate-600 flex items-center justify-center gap-2">

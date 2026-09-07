@@ -1,9 +1,9 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
-import { UserCheck, AlertTriangle, FileText, HeartPulse, Stethoscope, Edit3, CheckCircle2, XCircle, PlusCircle, ArrowRight } from 'lucide-react';
+import { UserCheck, AlertTriangle, FileText, HeartPulse, Stethoscope, Edit3, CheckCircle2, XCircle, PlusCircle, ArrowRight, ClipboardList, Activity } from 'lucide-react';
 
 export const PhysicianDashboardScreen: React.FC = () => {
-  const { patient, chiefComplaint, isRedFlagTriggered, documents, clinicalSummary, setStep } = useApp();
+  const { patient, chiefComplaint, isRedFlagTriggered, documents, clinicalSummary, answers, ayushData, setStep } = useApp();
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-6 animate-fadeIn">
@@ -69,7 +69,7 @@ export const PhysicianDashboardScreen: React.FC = () => {
             <span>Previous Conditions</span>
             <HeartPulse className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className="text-base font-bold text-slate-900 line-clamp-1">
+          <div className="text-base font-bold text-slate-900">
             {patient.existingConditions.join(', ') || 'None Reported'}
           </div>
           <div className="text-xs text-slate-600">Documented in past history</div>
@@ -86,10 +86,10 @@ export const PhysicianDashboardScreen: React.FC = () => {
         </div>
       </div>
 
-      {/* Summary View & Actions */}
+      {/* Detailed Consultation Review Card */}
       <div className="glass-card rounded-3xl p-6 border border-white/80 shadow-xl space-y-6">
         <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-          <h2 className="text-xl font-bold text-slate-900 m-0">Structured Clinical Summary</h2>
+          <h2 className="text-xl font-bold text-slate-900 m-0">Structured Clinical Summary & Review Details</h2>
           
           <div className="flex items-center gap-2">
             <button
@@ -101,23 +101,70 @@ export const PhysicianDashboardScreen: React.FC = () => {
           </div>
         </div>
 
-        {/* Compact Summary Display */}
-        <div className="bg-white/90 rounded-2xl p-5 border border-slate-200 space-y-4 text-sm font-serif">
+        {/* Summary & Review Display */}
+        <div className="bg-white/90 rounded-2xl p-5 border border-slate-200 space-y-5 text-sm">
           <div>
-            <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">History of Present Illness</h4>
-            <p className="mt-1 text-slate-900">{clinicalSummary.hpi}</p>
+            <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">History of Present Illness (HPI)</h4>
+            <p className="mt-1 font-serif text-slate-900 leading-relaxed">{clinicalSummary.hpi}</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 border-t border-slate-100">
+          {/* Captured Intake Answers Grid */}
+          {answers.length > 0 && (
+            <div className="pt-3 border-t border-slate-100 space-y-2">
+              <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">Captured Patient Intake Answers</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-2">
+                {answers.map((ans) => (
+                  <div key={ans.id} className="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs">
+                    <div className="font-bold text-blue-900 uppercase text-[10px] tracking-wider mb-0.5">{ans.category}</div>
+                    <div className="text-slate-600 font-medium">{ans.question}</div>
+                    <div className="font-bold text-slate-900 mt-0.5">{ans.answer}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AYUSH Assessment details if available */}
+          {ayushData.prakriti && (
+            <div className="pt-3 border-t border-slate-100 space-y-2">
+              <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-emerald-800">AYUSH Clinical Assessment</h4>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-emerald-50/70 p-3 rounded-xl border border-emerald-200 text-xs text-emerald-950 font-sans">
+                <div><span className="font-bold">Prakriti:</span> {ayushData.prakriti}</div>
+                <div><span className="font-bold">Vikriti:</span> {ayushData.vikriti}</div>
+                <div><span className="font-bold">Agni / Ahara:</span> {ayushData.aharaShakti}</div>
+                <div><span className="font-bold">Ahara-Vihara:</span> {ayushData.aharaViharaNotes}</div>
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100">
             <div>
               <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">Past History & Medications</h4>
-              <p className="mt-1 text-slate-800">{clinicalSummary.pastMedicalHistory} • {clinicalSummary.drugHistory}</p>
+              <p className="mt-1 font-serif text-slate-800">{clinicalSummary.pastMedicalHistory} • {clinicalSummary.drugHistory}</p>
             </div>
             <div>
               <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">Allergies & Family History</h4>
-              <p className="mt-1 text-slate-800">{clinicalSummary.allergyHistory} • {clinicalSummary.familyHistory}</p>
+              <p className="mt-1 font-serif text-slate-800">{clinicalSummary.allergyHistory} • {clinicalSummary.familyHistory}</p>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-slate-100">
+            <div>
+              <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">Review of Systems (ROS)</h4>
+              <p className="mt-1 font-serif text-slate-800">{clinicalSummary.reviewOfSystems}</p>
+            </div>
+            <div>
+              <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-blue-800">Previous Documented Investigations</h4>
+              <p className="mt-1 font-serif text-slate-800">{clinicalSummary.previousInvestigations}</p>
+            </div>
+          </div>
+
+          {clinicalSummary.physicianNotes && (
+            <div className="pt-3 border-t border-slate-100">
+              <h4 className="font-sans font-bold text-xs uppercase tracking-wider text-indigo-800">Physician Clinical Notes</h4>
+              <p className="mt-1 font-sans text-slate-900 bg-indigo-50/80 p-3 rounded-xl border border-indigo-200 whitespace-pre-wrap">{clinicalSummary.physicianNotes}</p>
+            </div>
+          )}
         </div>
 
         {/* Action Bar */}
